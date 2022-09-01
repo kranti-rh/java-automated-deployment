@@ -1,4 +1,4 @@
-resource "google_storage_bucket" "bucket" {
-  name = "test-bucket-random-001122"
-  location = "EU"
+provider "google" {
+  project = "shadowbot-krprasad"
+  region  = "us-central1"
 }
