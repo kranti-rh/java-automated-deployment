@@ -11,6 +11,6 @@ public class GreetingsResource {
     @GET
     @Produces(MediaType.TEXT_PLAIN)
     public String hello() {
-        return "Hello RESTEasy";
+        return "Hello there! I'm deployed from github action.";
     }
 }
