@@ -6,6 +6,12 @@ on:
     - main
   pull_request:
 
+env:
+  PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+  APP_ID: continous-deployment
+  RUN_REGION: us-east1
+  GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
+
 jobs:
   terraform:
     name: 'Terraform'
@@ -49,3 +55,17 @@ jobs:
       run: terraform apply -auto-approve
       env:
         GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
+
+    # Setup gcloud CLI
+    - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
+      with:
+        version: "290.0.1"
+        service_account_key: ${{ secrets.GOOGLE_CREDENTIALS }}
+        project_id: ${{ secrets.GCP_PROJECT_ID }}
+
+    # Build and push image to Google Container Registry
+    - name: Build
+      run: gcloud builds submit --config cloudbuild.yaml .
+
+    - name: Deploy
+      run: gcloud run deploy $APP_ID --image gcr.io/$PROJECT_ID/$APP_ID --platform managed --region $RUN_REGION --allow-unauthenticated

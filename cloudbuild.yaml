@@ -1,0 +1,13 @@
+steps:
+- name: "gcr.io/cloud-builders/docker"
+  args:
+  - build
+  - "--tag=gcr.io/shadowbot-io-preprod/continuous-deployment"
+  - "--file=./src/main/docker/Dockerfile.jvm"
+  - .
+images:
+- 'gcr.io/shadowbot-io-preprod/continuous-deployment'
+
+
+# gcloud builds submit --tag gcr.io/shadowbot-io-preprod/continuous-deployment --project=shadowbot-io-preprod
+# gcloud builds submit --tag gcr.io/shadowbot-io-preprod/continuous-deployment ./path/to/YourDockerFile
