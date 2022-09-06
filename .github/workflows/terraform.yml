@@ -68,4 +68,5 @@ jobs:
       run: gcloud builds submit --config cloudbuild.yaml .
 
     - name: Deploy
+      if: github.ref == 'refs/heads/main' && github.event_name == 'push'
       run: gcloud run deploy $APP_ID --image gcr.io/$PROJECT_ID/$APP_ID --platform managed --region $RUN_REGION --allow-unauthenticated
